@@ -1,0 +1,12 @@
+[
+  {
+    "name": "BBC",
+    "rss_url": "http://feeds.bbci.co.uk/news/rss.xml",
+    "enabled": true
+  },
+  {
+    "name": "Reuters",
+    "rss_url": "http://feeds.reuters.com/reuters/topNews",
+    "enabled": true
+  }
+]

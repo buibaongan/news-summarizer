@@ -1,0 +1,16 @@
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.git/
+
+data/
+models/
+news.db
+
+frontend/node_modules/
+frontend/dist/
+
+.env

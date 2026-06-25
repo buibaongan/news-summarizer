@@ -1,0 +1,124 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  TRANSFORMERS_OFFLINE: "1"
+  HF_DATASETS_OFFLINE: "1"
+  SUMMARY_MODELS: tfidf
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest -q
+
+  docker-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: news-summarizer-backend:ci
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
+
+      - name: Build frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          load: true
+          tags: news-summarizer-frontend:ci
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
+
+      - name: Start backend with PostgreSQL
+        env:
+          DATABASE_URL: postgresql+psycopg2://postgres:postgres@postgres:5432/news_summarizer
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: news_summarizer
+          SUMMARY_MODELS: tfidf
+          ENABLE_NEWSAPI: "false"
+          CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
+        run: |
+          docker compose --profile postgres up -d postgres
+          for i in {1..30}; do
+            if docker compose exec -T postgres pg_isready -U postgres -d news_summarizer; then
+              ready=1
+              break
+            fi
+            sleep 2
+          done
+          test "${ready:-0}" = "1"
+          docker compose --profile postgres up -d app
+
+      - name: Wait for health check
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://localhost:8000/health; then
+              exit 0
+            fi
+            docker compose logs --no-color app | tail -n 80
+            sleep 2
+          done
+          docker compose logs --no-color app
+          exit 1
+
+      - name: API smoke tests
+        run: |
+          set -euo pipefail
+
+          curl -fsS http://localhost:8000/health
+
+          curl -fsS -X POST http://localhost:8000/ingest \
+            -H "Content-Type: application/json" \
+            -d '{"limit":0,"models":["tfidf"]}'
+
+          curl -fsS http://localhost:8000/articles
+
+          curl -fsS -X POST http://localhost:8000/summarize \
+            -H "Content-Type: application/json" \
+            -d '{"text":"First sentence for CI. Second sentence for smoke testing.","model":"tfidf"}'
+
+          curl -fsS "http://localhost:8000/search?q=CI"
+          curl -fsS http://localhost:8000/models/comparison
+          curl -fsS http://localhost:8000/models/stats
+
+          status="$(curl -sS -o /tmp/missing_article.json -w "%{http_code}" http://localhost:8000/articles/999999)"
+          test "$status" = "404"
+
+      - name: Compose logs on failure
+        if: failure()
+        run: docker compose --profile postgres logs --no-color
+
+      - name: Stop compose services
+        if: always()
+        run: docker compose --profile postgres down -v
