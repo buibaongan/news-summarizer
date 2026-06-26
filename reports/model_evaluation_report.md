@@ -19,16 +19,6 @@ The script saves summaries and metrics into `news.db`. I also inspected the actu
 
 Important: `scripts.run_evaluation` appends results every time. So the printed table is cumulative and includes repeated/older runs.
 
-## Cumulative DB Scores
-
-These are the scores from the full database after repeated runs:
-
-| Model | Summaries | Avg Time | Avg Words | ROUGE-1 | ROUGE-2 | ROUGE-L | BERT F1 |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| `facebook/bart-large-cnn` | 180 | 5.5530 | 37.53 | 0.3517 | 0.1026 | 0.2545 | 0.8955 |
-| `t5-small` | 181 | 1.8248 | 39.01 | 0.3281 | 0.0960 | 0.2506 | 0.8828 |
-| `textrank` | 181 | 0.0023 | 78.41 | 0.3029 | 0.0944 | 0.2221 | 0.8944 |
-| `tfidf` | 181 | 0.0018 | 79.61 | 0.3045 | 0.0911 | 0.2269 | 0.8956 |
 
 ## Current 50-Sample Scores
 
