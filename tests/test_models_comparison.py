@@ -1,8 +1,8 @@
-from database import session as dbsession
-from database.models import Base
+from news_summarizer.database import session as dbsession
+from news_summarizer.database.models import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database import repository
+from news_summarizer.database import repository
 
 
 def setup_db():
@@ -22,6 +22,6 @@ def test_models_comparison_endpoint():
 
     # query via direct DB aggregation similar to endpoint
     from sqlalchemy import func
-    from database.models import Summary, EvaluationResult
+    from news_summarizer.database.models import Summary, EvaluationResult
     row = db.query(Summary.model_name, func.count(Summary.id).label('num_summaries')).group_by(Summary.model_name).all()
     assert len(row) == 1

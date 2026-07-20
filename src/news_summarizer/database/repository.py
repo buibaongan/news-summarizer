@@ -1,8 +1,8 @@
-from database.session import SessionLocal
-from database.models import Article, Summary, EvaluationResult
+from news_summarizer.database.session import SessionLocal
+from news_summarizer.database.models import Article, Summary, EvaluationResult
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func
-from ingestion.dedup import normalize_title, similarity
+from news_summarizer.ingestion.dedup import normalize_title, similarity
 
 def get_db():
     db = SessionLocal()

@@ -1,12 +1,18 @@
 import argparse
 import json
 from pathlib import Path
+import sys
 from typing import Sequence
 
-from database import repository
-from database import session as dbsession
-from ingestion.ingest_pipeline import build_summarizers
-from nlp.evaluator import evaluate_summary
+ROOT_DIR = Path(__file__).resolve().parents[1]
+SRC_DIR = ROOT_DIR / 'src'
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from news_summarizer.database import repository
+from news_summarizer.database import session as dbsession
+from news_summarizer.ingestion.ingest_pipeline import build_summarizers
+from news_summarizer.nlp.evaluator import evaluate_summary
 
 
 def load_evaluation_dataset(path: str) -> list:

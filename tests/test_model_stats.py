@@ -2,11 +2,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from app.main import app
+from news_summarizer.app.main import app
 from tests.api_client import ASGITestClient
-from database import repository
-from database import session as dbsession
-from database.models import Base
+from news_summarizer.database import repository
+from news_summarizer.database import session as dbsession
+from news_summarizer.database.models import Base
 
 
 def setup_db():

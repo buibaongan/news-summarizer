@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
-from database import session as dbsession
-from database.models import Summary, EvaluationResult
-from database import repository
+from news_summarizer.database import session as dbsession
+from news_summarizer.database.models import Summary, EvaluationResult
+from news_summarizer.database import repository
 from sqlalchemy import func
 
 router = APIRouter(prefix="/models", tags=["models"])

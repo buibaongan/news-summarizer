@@ -1,6 +1,6 @@
 import re
 from difflib import SequenceMatcher
-from database.models import Article
+from news_summarizer.database.models import Article
 
 def normalize_title(title: str) -> str:
     t = title.lower()

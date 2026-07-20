@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Body, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
-from ingestion.ingest_pipeline import ingest_all
-from app.config import settings
+from news_summarizer.app.config import settings
+from news_summarizer.ingestion.ingest_pipeline import ingest_all
 
 router = APIRouter(prefix="", tags=["ingest"])
 

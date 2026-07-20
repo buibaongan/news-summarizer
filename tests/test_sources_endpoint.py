@@ -1,4 +1,4 @@
-from app.main import app
+from news_summarizer.app.main import app
 from tests.api_client import ASGITestClient
 
 

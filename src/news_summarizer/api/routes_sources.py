@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from ingestion.rss_collector import load_sources
+from news_summarizer.ingestion.rss_collector import load_sources
 
 router = APIRouter(prefix="/sources", tags=["sources"])
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from database import session as dbsession
-from database import repository
+from news_summarizer.database import session as dbsession
+from news_summarizer.database import repository
 from typing import List
 from datetime import datetime
 

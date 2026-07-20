@@ -1,4 +1,4 @@
-from .base_summarizer import BaseSummarizer
+from news_summarizer.nlp.summarizers.base import BaseSummarizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 

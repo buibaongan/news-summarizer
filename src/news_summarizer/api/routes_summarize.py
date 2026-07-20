@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from ingestion.ingest_pipeline import build_summarizers
+from news_summarizer.ingestion.ingest_pipeline import build_summarizers
 
 router = APIRouter(prefix="/summarize", tags=["summarize"])
 

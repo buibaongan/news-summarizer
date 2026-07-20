@@ -1,4 +1,4 @@
-from nlp import evaluator
+from news_summarizer.nlp import evaluator
 
 
 def test_evaluator_with_reference(monkeypatch):
@@ -18,8 +18,8 @@ def test_evaluator_with_reference(monkeypatch):
         def score(self, ref, summary):
             return {'rouge1': FakeScore(0.5), 'rouge2': FakeScore(0.25), 'rougeL': FakeScore(0.45)}
 
-    monkeypatch.setattr('nlp.evaluator.rouge_scorer', type('M', (), {'RougeScorer': lambda *a, **k: FakeRouge()}))
-    monkeypatch.setattr('nlp.evaluator.bert_score', lambda a, b, lang='en': ([0.6], [0.5], [0.55]))
+    monkeypatch.setattr('news_summarizer.nlp.evaluator.rouge_scorer', type('M', (), {'RougeScorer': lambda *a, **k: FakeRouge()}))
+    monkeypatch.setattr('news_summarizer.nlp.evaluator.bert_score', lambda a, b, lang='en': ([0.6], [0.5], [0.55]))
 
     res = evaluator.evaluate_summary('summary text', reference='reference text')
     assert res['rouge_1'] == 0.5
@@ -32,8 +32,8 @@ def test_evaluator_with_reference(monkeypatch):
 
 def test_evaluator_no_reference(monkeypatch):
     # ensure rouge_scorer and bert_score are None
-    monkeypatch.setattr('nlp.evaluator.rouge_scorer', None)
-    monkeypatch.setattr('nlp.evaluator.bert_score', None)
+    monkeypatch.setattr('news_summarizer.nlp.evaluator.rouge_scorer', None)
+    monkeypatch.setattr('news_summarizer.nlp.evaluator.bert_score', None)
 
     res = evaluator.evaluate_summary('summary only', reference=None)
     assert res['rouge_1'] is None

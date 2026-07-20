@@ -1,4 +1,4 @@
-from nlp.classifier import classify_by_keywords
+from news_summarizer.nlp.classifier import classify_by_keywords
 
 
 def test_entertainment_article_is_not_classified_as_technology():

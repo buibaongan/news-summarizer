@@ -1,10 +1,10 @@
 import os
 from typing import Optional, Sequence
-from ingestion import rss_collector, newsapi_collector
-from scraping import article_scraper
-from nlp.classifier import classify_by_keywords
-from database import repository
-from database import session as dbsession
+from news_summarizer.ingestion import rss_collector, newsapi_collector
+from news_summarizer.scraping import article_scraper
+from news_summarizer.nlp.classifier import classify_by_keywords
+from news_summarizer.database import repository
+from news_summarizer.database import session as dbsession
 
 
 DEFAULT_MODELS = ['tfidf', 'textrank', 'bart']
@@ -23,16 +23,16 @@ def build_summarizers(models: Optional[Sequence[str]] = None) -> list:
     summarizers = []
     for model in selected:
         if model == 'tfidf':
-            from nlp.tfidf_summarizer import TFIDFSummarizer
+            from news_summarizer.nlp.summarizers.tfidf import TFIDFSummarizer
             summarizers.append(TFIDFSummarizer())
         elif model == 'textrank':
-            from nlp.textrank_summarizer import TextRankSummarizer
+            from news_summarizer.nlp.summarizers.textrank import TextRankSummarizer
             summarizers.append(TextRankSummarizer())
         elif model == 'bart':
-            from nlp.transformer_summarizer import TransformerSummarizer
+            from news_summarizer.nlp.summarizers.transformer import TransformerSummarizer
             summarizers.append(TransformerSummarizer(model_name='facebook/bart-large-cnn'))
         elif model == 't5':
-            from nlp.transformer_summarizer import TransformerSummarizer
+            from news_summarizer.nlp.summarizers.transformer import TransformerSummarizer
             summarizers.append(TransformerSummarizer(model_name='t5-small'))
     return summarizers
 
@@ -48,7 +48,7 @@ def validate_model_names(models: Optional[Sequence[str]] = None) -> list:
 def _create_missing_summaries(db, article, text: str, title: str, summarizers: Sequence, stats: dict) -> int:
     created = 0
     for summarizer in summarizers:
-        from nlp.evaluator import evaluate_summary
+        from news_summarizer.nlp.evaluator import evaluate_summary
         if repository.get_summary_by_article_and_model(db, article.id, summarizer.model_name):
             stats['skipped_existing_summaries'] += 1
             continue
@@ -61,7 +61,7 @@ def _create_missing_summaries(db, article, text: str, title: str, summarizers: S
                 'model': summarizer.model_name,
                 'error': f'Summarization failed: {exc}'
             })
-            from nlp.tfidf_summarizer import TFIDFSummarizer
+            from news_summarizer.nlp.summarizers.tfidf import TFIDFSummarizer
             fallback = TFIDFSummarizer().summarize(text or title)
             res = {
                 'summary_text': fallback['summary_text'],

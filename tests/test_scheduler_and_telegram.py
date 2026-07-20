@@ -1,12 +1,12 @@
 import os
-from ingestion import scheduler
-from delivery import telegram_bot
+from news_summarizer.app import scheduler
+from news_summarizer.delivery import telegram_bot
 from unittest.mock import patch
 
 
 def test_scheduler_job_calls_ingest_and_telegram(monkeypatch):
     # mock ingest_all to be quick
-    monkeypatch.setattr('ingestion.ingest_pipeline.ingest_all', lambda *args, **kwargs: {'collected': 0})
+    monkeypatch.setattr('news_summarizer.ingestion.ingest_pipeline.ingest_all', lambda *args, **kwargs: {'collected': 0})
     sent = {'ok': False}
 
     def fake_deliver():

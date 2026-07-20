@@ -2,10 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from app.main import app
-from database import repository
-from database import session as dbsession
-from database.models import Base
+from news_summarizer.app.main import app
+from news_summarizer.database import repository
+from news_summarizer.database import session as dbsession
+from news_summarizer.database.models import Base
 from tests.api_client import ASGITestClient
 
 
@@ -44,7 +44,7 @@ def test_article_detail_returns_one_summary_per_model():
     article = repository.create_article(db, 'Article', 'http://example.com/article')
     first = repository.create_summary(db, article.id, 'tfidf', 'first summary', 'extractive', 0.1, 2)
     # Simulate old duplicated data that may already exist in a user's database.
-    from database.models import Summary
+    from news_summarizer.database.models import Summary
     duplicate = Summary(article_id=article.id, model_name='tfidf', summary_text='newest summary', summary_type='extractive', processing_time=0.2, summary_length=2)
     db.add(duplicate)
     db.commit()

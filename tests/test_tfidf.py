@@ -1,4 +1,4 @@
-from nlp.tfidf_summarizer import TFIDFSummarizer
+from news_summarizer.nlp.summarizers.tfidf import TFIDFSummarizer
 
 def test_tfidf_basic():
     text = "Sentence one.\nSentence two about python.\nSentence three about testing."

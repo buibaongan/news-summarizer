@@ -1,4 +1,4 @@
-from nlp.transformer_summarizer import TransformerSummarizer
+from news_summarizer.nlp.summarizers.transformer import TransformerSummarizer
 
 
 def test_transformer_summarizer_is_mocked():

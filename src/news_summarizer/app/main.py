@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import settings
-from database import session as dbsession
-from api import routes_articles, routes_summarize, routes_search, routes_ingest, routes_models, routes_sources
-from ingestion import scheduler as ingest_scheduler
+from news_summarizer.app.config import settings
+from news_summarizer.database import session as dbsession
+from news_summarizer.api import routes_articles, routes_summarize, routes_search, routes_ingest, routes_models, routes_sources
+from news_summarizer.app import scheduler as ingest_scheduler
 
 app = FastAPI(title="News Summarizer")
 

@@ -10,7 +10,7 @@ Backend quick start
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+PYTHONPATH=src uvicorn news_summarizer.app.main:app --reload
 ```
 
 Health check:
@@ -28,7 +28,7 @@ Use lightweight summarizers for demos unless you have already downloaded transfo
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-DATABASE_URL=sqlite:///./data/demo.db SUMMARY_MODELS=tfidf uvicorn app.main:app --reload
+DATABASE_URL=sqlite:///./data/demo.db SUMMARY_MODELS=tfidf PYTHONPATH=src uvicorn news_summarizer.app.main:app --reload
 ```
 
 In another terminal, start the dashboard:

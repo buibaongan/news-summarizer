@@ -10,8 +10,8 @@ def mock_transformer_pipelines(monkeypatch):
             return [{'summary_text': f'MOCK SUMMARY from {model or "model"}'}]
         return summarizer
 
-    # patch the pipeline symbol inside the nlp.transformer_summarizer module
-    monkeypatch.setattr('nlp.transformer_summarizer.pipeline', fake_pipeline)
+    # patch the pipeline symbol inside the news_summarizer.nlp.summarizers.transformer module
+    monkeypatch.setattr('news_summarizer.nlp.summarizers.transformer.pipeline', fake_pipeline)
     # also patch transformers.pipeline in case other modules reference it
     monkeypatch.setattr('transformers.pipeline', fake_pipeline)
     yield

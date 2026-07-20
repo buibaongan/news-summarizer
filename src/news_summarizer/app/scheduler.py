@@ -1,9 +1,9 @@
 import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-from app.config import settings
-from ingestion import ingest_pipeline
-from delivery import telegram_bot
+from news_summarizer.app.config import settings
+from news_summarizer.ingestion import ingest_pipeline
+from news_summarizer.delivery import telegram_bot
 
 logger = logging.getLogger(__name__)
 scheduler = None

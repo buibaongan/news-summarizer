@@ -1,4 +1,4 @@
-from ingestion.ingest_pipeline import build_summarizers
+from news_summarizer.ingestion.ingest_pipeline import build_summarizers
 
 
 def test_build_summarizers_includes_t5():

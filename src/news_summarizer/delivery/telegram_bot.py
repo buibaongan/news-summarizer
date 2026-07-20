@@ -1,7 +1,7 @@
 import os
 import requests
-from database.session import SessionLocal
-from database.repository import get_unsent_summaries, mark_summary_sent
+from news_summarizer.database.session import SessionLocal
+from news_summarizer.database.repository import get_unsent_summaries, mark_summary_sent
 
 TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
@@ -17,7 +17,7 @@ def send_message(text: str):
 def deliver_unsent():
     db = SessionLocal()
     try:
-        from database.models import Summary
+        from news_summarizer.database.models import Summary
         summaries = db.query(Summary).filter(Summary.sent_to_telegram == False).all()
         for s in summaries:
             text = f"{s.model_name} summary:\n{s.summary_text[:1000]}"

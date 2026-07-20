@@ -1,14 +1,14 @@
 import os
-from app.main import app
+from news_summarizer.app.main import app
 from tests.api_client import ASGITestClient
-import ingestion.rss_collector as rc
-import scraping.article_scraper as sc
-from database import session as dbsession
+import news_summarizer.ingestion.rss_collector as rc
+import news_summarizer.scraping.article_scraper as sc
+from news_summarizer.database import session as dbsession
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
-from database.models import Base
-from database import repository
+from news_summarizer.database.models import Base
+from news_summarizer.database import repository
 
 
 def setup_in_memory_db():

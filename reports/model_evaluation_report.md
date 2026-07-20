@@ -10,7 +10,7 @@ Database inspected: `news.db`
 Command used:
 
 ```bash
-PYTHONPATH=. .venv/bin/python -m scripts.run_evaluation \
+PYTHONPATH=src .venv/bin/python -m scripts.run_evaluation \
   --dataset data/evaluation/sample.jsonl \
   --models tfidf,textrank,t5,bart
 ```

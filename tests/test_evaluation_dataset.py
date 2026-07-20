@@ -2,8 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from database import session as dbsession
-from database.models import Base, EvaluationResult
+from news_summarizer.database import session as dbsession
+from news_summarizer.database.models import Base, EvaluationResult
 from scripts import run_evaluation
 
 

@@ -1,8 +1,8 @@
-from database import session as dbsession
-from database.models import Base
+from news_summarizer.database import session as dbsession
+from news_summarizer.database.models import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ingestion.dedup import normalize_title, is_duplicate
+from news_summarizer.ingestion.dedup import normalize_title, is_duplicate
 
 
 def setup_db():
@@ -19,6 +19,6 @@ def test_normalize_title():
 
 def test_is_duplicate_by_url():
     db = setup_db()
-    from database.repository import create_article
+    from news_summarizer.database.repository import create_article
     a = create_article(db, title='A', url='http://example.com/1')
     assert is_duplicate(db, 'http://example.com/1', 'A')

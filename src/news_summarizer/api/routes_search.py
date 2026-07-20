@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query
-from database import session as dbsession
-from database.models import Article
+from news_summarizer.database import session as dbsession
+from news_summarizer.database.models import Article
 from sqlalchemy import or_
 
 router = APIRouter(prefix="/search", tags=["search"])
